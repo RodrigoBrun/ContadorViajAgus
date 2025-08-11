@@ -1,0 +1,460 @@
+/* =========================================================
+   styles.css — Vuelo PTY → MVD (Agustina ✈ Rodrigo)
+   Objetivo: estética “aerolínea pro” con animaciones sutiles.
+   Estructura: variables, reset, layout, módulos, utilidades, responsive.
+   Dependencias: Google Fonts (Playfair Display, Poppins), AOS.
+========================================================= */
+
+/* ================================
+   🎨 Variables (tema)
+================================ */
+:root{
+  --bg: #0e1117;
+  --bg-soft: #121624;
+  --panel: #161b26;
+  --panel-2: #0d1320;
+  --text: #e6eefc;
+  --text-dim: #a9b6d3;
+
+  --brand: #22c55e;      /* acento principal */
+  --brand-2: #60a5fa;    /* acento secundario */
+  --alert: #f59e0b;      /* warning */
+  --ok: #10b981;         /* ok */
+  --danger: #ef4444;     /* cancel */
+
+  --line: #243047;
+  --dashed: #2e3b57;
+
+  --shadow-lg: 0 20px 50px rgba(0,0,0,.45);
+  --shadow-md: 0 10px 24px rgba(0,0,0,.35);
+
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+
+  --header-h: 84px;
+  --maxw: 1200px;
+}
+
+/* ================================
+   🔧 Reset + Base
+================================ */
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+html, body{
+  height: 100%;
+}
+
+body{
+  margin: 0;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #1b2140 0%, transparent 60%),
+    radial-gradient(800px 600px at 100% 0%, #0d1930 0%, transparent 60%),
+    linear-gradient(180deg, #0a0f1a 0%, #0b0f16 100%);
+  color: var(--text);
+  letter-spacing: .2px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img{ max-width: 100%; display: block; }
+
+/* ================================
+   🧭 Layout: Header / Main / Footer
+================================ */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(10, 15, 26, 0.6);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark{
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #061016;
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: var(--shadow-md);
+}
+
+.brand-text .airline{
+  display: block;
+  font-size: .78rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: .18em;
+}
+
+.brand-text .route{
+  margin: 2px 0 0 0;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+}
+
+.flight-code .code{
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(96, 165, 250, .15);
+  border: 1px solid rgba(96, 165, 250, .35);
+  color: #cfe5ff;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+main{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.site-footer{
+  padding: 28px 24px 60px;
+  text-align: center;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* ================================
+   🗺️ Trayecto (mapa estilizado)
+================================ */
+.track-section{
+  margin: 24px 0 10px;
+  background: radial-gradient(800px 500px at 50% -40%, rgba(96,165,250,.12), transparent 60%);
+}
+
+.track-wrap{
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 760px) 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.city{
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding: 10px 0;
+  border-radius: var(--radius-lg);
+}
+
+.city-code{
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: #e8f2ff;
+  text-shadow: 0 6px 20px rgba(96,165,250,.25);
+}
+
+.city-name{
+  font-size: .95rem;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.track{
+  position: relative;
+  height: 140px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, rgba(20,26,40,.7), rgba(15,20,32,.7));
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* Línea punteada */
+.dashed-line{
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 8px,
+      var(--dashed) 8px 16px
+    );
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.5));
+}
+
+/* Avión */
+.plane{
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  animation: plane-cruise 6s ease-in-out infinite alternate;
+}
+.plane-emoji{ font-size: 28px; }
+
+/* Nombres que se acercan */
+.name-tag{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(34,197,94,.12);
+  border: 1px solid rgba(34,197,94,.38);
+  color: #c9ffde;
+  font-weight: 700;
+  letter-spacing: .05em;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  backdrop-filter: blur(4px);
+}
+
+.name-left{
+  left: -20%;
+  animation: name-left-move 5.8s cubic-bezier(.2,.8,.2,1) infinite alternate;
+}
+.name-right{
+  right: -20%;
+  animation: name-right-move 5.8s cubic-bezier(.2,.8,.2,1) infinite alternate-reverse;
+}
+
+/* Microcopy */
+.microcopy{
+  margin: 14px auto 0;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+/* ================================
+   🧭 Tarjetas de información
+================================ */
+.flight-info{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 18px;
+  margin: 20px 0 10px;
+}
+
+.info-card{
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.info-card h3{
+  margin: 0 0 6px 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  letter-spacing: .02em;
+}
+
+.info-card .airport{
+  margin: 6px 0 2px;
+  color: var(--text-dim);
+  font-size: .95rem;
+}
+
+.info-card .datetime{
+  margin: 2px 0 8px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.info-card .note{
+  color: var(--text-dim);
+  font-size: .8rem;
+}
+
+/* Estado + progreso */
+.status .pill{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(34,197,94,.18);
+  border: 1px solid rgba(34,197,94,.35);
+  color: #b8ffd4;
+  font-weight: 700;
+}
+
+.progress{
+  margin-top: 10px;
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,.05);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.progress-bar{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
+  box-shadow: 0 0 18px rgba(34,197,94,.35);
+  transition: width .8s ease;
+}
+
+/* ================================
+   ⏳ Contadores
+================================ */
+.countdowns{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+  margin: 18px 0 8px;
+}
+
+.countdown-card{
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-md);
+}
+
+.countdown-card h2{
+  margin: 0 0 14px 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+}
+
+.timer{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.timer > div{
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+.timer .num{
+  display: block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  line-height: 1.1;
+}
+
+.timer .lbl{
+  display: block;
+  margin-top: 4px;
+  font-size: .8rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+/* ================================
+   🔁 Utilidades
+================================ */
+.hidden{ display: none !important; }
+.center{ text-align: center; }
+.muted{ color: var(--text-dim); }
+
+/* ================================
+   🎞️ Animaciones clave
+================================ */
+@keyframes plane-cruise{
+  0%{
+    left: 10%;
+    filter: drop-shadow(0 6px 12px rgba(96,165,250,.25));
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100%{
+    left: 90%;
+    filter: drop-shadow(0 10px 18px rgba(96,165,250,.45));
+    transform: translate(-50%, -50%) rotate(2deg);
+  }
+}
+
+@keyframes name-left-move{
+  0%{ left: -25%; opacity: .0; }
+  40%{ left: 15%; opacity: .9; }
+  100%{ left: 35%; opacity: 1; }
+}
+
+@keyframes name-right-move{
+  0%{ right: -25%; opacity: .0; }
+  40%{ right: 15%; opacity: .9; }
+  100%{ right: 35%; opacity: 1; }
+}
+
+/* Sutil brillo al hover en tarjetas */
+.info-card:hover,
+.countdown-card:hover{
+  box-shadow: 0 14px 36px rgba(0,0,0,.48), 0 0 0 1px rgba(255,255,255,.06) inset;
+  transform: translateY(-1px);
+  transition: all .25s ease;
+}
+
+/* ================================
+   📱 Responsive
+================================ */
+@media (max-width: 1024px){
+  .track-wrap{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .city{
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 860px){
+  .flight-info{
+    grid-template-columns: 1fr;
+  }
+  .countdowns{
+    grid-template-columns: 1fr;
+  }
+  .track{
+    height: 150px;
+  }
+  .name-left{ left: -30%; }
+  .name-right{ right: -30%; }
+}
+
+@media (max-width: 520px){
+  main{ padding: 18px; }
+  .site-header{ padding: 12px 16px; height: auto; }
+  .brand-mark{ width: 40px; height: 40px; font-size: 18px; }
+  .city-code{ font-size: 1.8rem; }
+  .timer > div{ padding: 10px; }
+}
+
+
+/* Anula animación automática del avión: el JS controla la posición */
+.plane { animation: none !important; }
+
+
+/* Los nombres ahora los controla JS, no CSS */
+.name-left,
+.name-right { animation: none !important; }

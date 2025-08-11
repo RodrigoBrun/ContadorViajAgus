@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vuelo PTY → MVD — Agustina ✈ Rodrigo</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- =========================================================
+       ✈️ Header
+       Muestra ruta del vuelo y branding ligero estilo aerolínea.
+       Dependencias: Google Fonts, AOS (decorativo).
+  ========================================================== -->
+  <header class="site-header" data-aos="fade-down">
+    <div class="brand">
+      <div class="brand-mark">✈</div>
+      <div class="brand-text">
+        <span class="airline">AEROLÍNEA · ESPECIAL</span>
+        <h1 class="route">Panamá (PTY) → Montevideo (MVD)</h1>
+      </div>
+    </div>
+    <div class="flight-code">
+      <span class="code">AGU ❤ ROD</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         🗺️ Trayecto (mapa estilizado)
+         Línea con avión animado y nombres acercándose al centro.
+         Dependencias: solo CSS para animaciones; AOS para entrada.
+    ========================================================== -->
+    <section class="track-section" data-aos="zoom-in-up">
+      <div class="track-wrap">
+        <div class="city city-left">
+          <span class="city-code">PTY</span>
+          <span class="city-name">Panamá</span>
+        </div>
+
+        <div class="track">
+          <!-- Nombres que se acercan -->
+          <div class="name-tag name-left" aria-label="Agustina">Agustina</div>
+          <div class="name-tag name-right" aria-label="Rodrigo">Rodrigo</div>
+
+          <!-- Avión que se desplaza -->
+          <div class="plane" aria-hidden="true">
+            <span class="plane-emoji">✈</span>
+          </div>
+
+          <!-- Línea punteada -->
+          <div class="dashed-line"></div>
+        </div>
+
+        <div class="city city-right">
+          <span class="city-code">MVD</span>
+          <span class="city-name">Uruguay</span>
+        </div>
+      </div>
+      <p class="microcopy" data-aos="fade-up" data-aos-delay="150">
+        De <strong>Agustina</strong> acercándose a <strong>Rodrigo</strong> — vuelo directo del corazón 💚
+      </p>
+    </section>
+
+    <!-- =========================================================
+         🧭 Información de vuelo
+         Tarjetas con datos clave + estados.
+         Dependencias: AOS.
+    ========================================================== -->
+    <section class="flight-info">
+      <div class="info-card" data-aos="fade-up">
+        <h3>Salida</h3>
+        <p class="airport">Tocumen Intl · PTY</p>
+        <p class="datetime">
+          <span id="salidaLocal">Jue 14 Ago — 19:00 (GMT−5)</span>
+        </p>
+        <small class="note">Hora local en Panamá</small>
+      </div>
+
+      <div class="info-card" data-aos="fade-up" data-aos-delay="150">
+        <h3>Llegada</h3>
+        <p class="airport">Carrasco Intl · MVD</p>
+        <p class="datetime">
+          <span id="llegadaLocal">Vie 15 Ago — 01:00 (GMT−3)</span>
+        </p>
+        <small class="note">Hora local en Uruguay</small>
+      </div>
+
+      <div class="info-card" data-aos="fade-up" data-aos-delay="300">
+        <h3>Estado</h3>
+        <p class="status">
+          <span id="estadoVuelo" class="pill">Próximo</span>
+        </p>
+        <div class="progress">
+          <div id="progresoVuelo" class="progress-bar" style="width:0%"></div>
+        </div>
+        <small class="note">Se actualiza automáticamente</small>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ⏳ Contadores
+         Dos contadores: hacia la salida y hacia la llegada.
+         Dependencias: JS puro, AOS para entrada.
+    ========================================================== -->
+    <section class="countdowns" data-aos="fade-up">
+      <div class="countdown-card">
+        <h2>Cuenta regresiva a la salida</h2>
+        <div id="contadorSalida" class="timer">
+          <div><span class="num">--</span><span class="lbl">días</span></div>
+          <div><span class="num">--</span><span class="lbl">horas</span></div>
+          <div><span class="num">--</span><span class="lbl">min</span></div>
+          <div><span class="num">--</span><span class="lbl">seg</span></div>
+        </div>
+      </div>
+
+      <div class="countdown-card" data-aos="fade-up" data-aos-delay="200">
+        <h2>Cuenta regresiva a la llegada</h2>
+        <div id="contadorLlegada" class="timer">
+          <div><span class="num">--</span><span class="lbl">días</span></div>
+          <div><span class="num">--</span><span class="lbl">horas</span></div>
+          <div><span class="num">--</span><span class="lbl">min</span></div>
+          <div><span class="num">--</span><span class="lbl">seg</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         📝 Detalles técnicos
+         Fechas “verdad” en atributos data (ISO con offset).
+         Editás acá sin tocar JS.
+         NOTE: ajustá horas si cambia el vuelo.
+    ========================================================== -->
+  <!-- Reemplazá el bloque #flightData por este -->
+<section class="data" aria-hidden="true">
+  <div id="flightData"
+       data-departure-mvd="2025-08-14T17:46:00-03:00"
+       data-departure-pty="2025-08-14T15:46:00-05:00"
+       data-arrival-mvd="2025-08-15T01:00:00-03:00">
+  </div>
+</section>
+
+  </main>
+
+  <footer class="site-footer" data-aos="fade-up">
+    <p>Hecho con amor para Agustina → Rodrigo • <span id="year"></span></p>
+  </footer>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
