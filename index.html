@@ -33,11 +33,7 @@
   </header>
 
   <main>
-    <!-- =========================================================
-         🗺️ Trayecto (mapa estilizado)
-         Línea con avión animado y nombres acercándose al centro.
-         Dependencias: solo CSS para animaciones; AOS para entrada.
-    ========================================================== -->
+    <!-- 🗺️ Trayecto -->
     <section class="track-section" data-aos="zoom-in-up">
       <div class="track-wrap">
         <div class="city city-left">
@@ -65,21 +61,18 @@
         </div>
       </div>
       <p class="microcopy" data-aos="fade-up" data-aos-delay="150">
-        De <strong>Agustina</strong> acercándose a <strong>Rodrigo</strong> — 💚
+        De <strong>Agustina</strong> acercándose a <strong>Rodrigo</strong> —💚
       </p>
     </section>
 
-    <!-- =========================================================
-         🧭 Información de vuelo
-         Tarjetas con datos clave + estados.
-         Dependencias: AOS.
-    ========================================================== -->
+    <!-- 🧭 Información de vuelo -->
     <section class="flight-info">
       <div class="info-card" data-aos="fade-up">
         <h3>Salida</h3>
         <p class="airport">Tocumen Intl · PTY</p>
         <p class="datetime">
-          <span id="salidaLocal">Jue 14 Ago — 19:00 (GMT−5)</span>
+          <!-- ACTUALIZADO -->
+          <span id="salidaLocal">Jue 14 Ago — 15:46 (GMT−5)</span>
         </p>
         <small class="note">Hora local en Panamá</small>
       </div>
@@ -88,6 +81,7 @@
         <h3>Llegada</h3>
         <p class="airport">Carrasco Intl · MVD</p>
         <p class="datetime">
+          <!-- Se mantiene 01:00 (GMT−3) -->
           <span id="llegadaLocal">Vie 15 Ago — 01:00 (GMT−3)</span>
         </p>
         <small class="note">Hora local en Uruguay</small>
@@ -105,11 +99,7 @@
       </div>
     </section>
 
-    <!-- =========================================================
-         ⏳ Contadores
-         Dos contadores: hacia la salida y hacia la llegada.
-         Dependencias: JS puro, AOS para entrada.
-    ========================================================== -->
+    <!-- ⏳ Contadores -->
     <section class="countdowns" data-aos="fade-up">
       <div class="countdown-card">
         <h2>Cuenta regresiva a la salida</h2>
@@ -132,21 +122,14 @@
       </div>
     </section>
 
-    <!-- =========================================================
-         📝 Detalles técnicos
-         Fechas “verdad” en atributos data (ISO con offset).
-         Editás acá sin tocar JS.
-         NOTE: ajustá horas si cambia el vuelo.
-    ========================================================== -->
-  <!-- Reemplazá el bloque #flightData por este -->
-<section class="data" aria-hidden="true">
-  <div id="flightData"
-       data-departure-mvd="2025-08-14T17:46:00-03:00"
-       data-departure-pty="2025-08-14T15:46:00-05:00"
-       data-arrival-mvd="2025-08-15T01:00:00-03:00">
-  </div>
-</section>
-
+    <!-- 📝 Detalles técnicos (datos fuente para JS) -->
+    <section class="data" aria-hidden="true">
+      <div id="flightData"
+           data-departure-mvd="2025-08-14T17:46:00-03:00"
+           data-departure-pty="2025-08-14T15:46:00-05:00"
+           data-arrival-mvd="2025-08-15T01:00:00-03:00">
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer" data-aos="fade-up">
@@ -158,4 +141,3 @@
   <script src="script.js" defer></script>
 </body>
 </html>
-
