@@ -209,3 +209,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.querySelector("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('#toggle-modo');
+  const icono = btn ? btn.querySelector('i') : null;
+
+  if (btn && icono) {
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('modo-oscuro');
+
+      // Cambiar icono
+      if (document.body.classList.contains('modo-oscuro')) {
+        icono.classList.remove('bx-moon');
+        icono.classList.add('bx-sun');
+      } else {
+        icono.classList.remove('bx-sun');
+        icono.classList.add('bx-moon');
+      }
+    });
+
+    // Estado inicial
+    if (document.body.classList.contains('modo-oscuro')) {
+      icono.classList.remove('bx-moon');
+      icono.classList.add('bx-sun');
+    } else {
+      icono.classList.remove('bx-sun');
+      icono.classList.add('bx-moon');
+    }
+  }
+});
+
