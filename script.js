@@ -4,12 +4,14 @@
   - Dominio y UI separadas; el DOM solo se toca en la capa UI.
   - Fechas configurables desde HTML vía data-attributes (#flightData).
   - Progreso en vivo: mueve ✈ de 10% a 90% del track y sincroniza nombres.
-  - Dependencias: AOS.js opcional (decorativo).
+  - Modo oscuro bordó con botón flotante (Boxicons) + persistencia.
+  - Extras: mapa Leaflet con ruta, flip-clock suave, ding de estado, corazón al llegar.
+  - Dependencias: AOS (opcional), Leaflet (mapa), Boxicons (íconos).
 ========================================================= */
 
-// ================================
-// 🧠 Dominio (clases y reglas)
-// ================================
+/* ================================
+   🧠 Dominio (clases y reglas)
+================================ */
 /**
  * Maneja lógica de vuelo (fechas, estados y progreso).
  */
@@ -59,9 +61,9 @@ class Vuelo {
   }
 }
 
-// ================================
-// 🖥️ UI (render y utilidades)
-// ================================
+/* ================================
+   🖥️ UI (render y utilidades)
+================================ */
 /**
  * Convierte ms a {d,h,m,s} positivos.
  * @param {number} ms
@@ -120,7 +122,6 @@ function renderAvion(progresoPct) {
   const planeEl = document.querySelector(".plane");
   if (!planeEl) return;
 
-  // mapeo lineal: 0% => 10%, 100% => 90%
   const min = 10;
   const max = 90;
   const leftPct = min + (max - min) * (Math.max(0, Math.min(100, progresoPct)) / 100);
@@ -131,9 +132,9 @@ function renderAvion(progresoPct) {
   const tilt = -2 + (leftPct - min) / (max - min) * 4; // -2° a +2°
   planeEl.style.transform = `translate(-50%, -50%) rotate(${tilt.toFixed(2)}deg)`;
 
-  // Sombra un poco más intensa a mitad de trayecto
+  // Sombra sutil (puede usar tu paleta si querés)
   planeEl.style.filter =
-    `drop-shadow(0 8px 14px rgba(96,165,250,${0.25 + 0.25 * Math.sin((leftPct - min) / (max - min) * Math.PI)}))`;
+    `drop-shadow(0 8px 14px rgba(0,0,0,${0.15 + 0.15 * Math.sin((leftPct - min) / (max - min) * Math.PI)}))`;
 }
 
 /**
@@ -162,44 +163,211 @@ function renderNombres(progresoPct) {
   rodrigoEl.style.transform = "translateY(-50%)";
 }
 
-// ================================
-// 🚦 Gestión de eventos (UI)
-// ================================
+/* ================================
+   🔊 Ding estilo aeropuerto
+================================ */
+function playDing() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.value = 880; // ding agudo
+    g.gain.value = 0.001; // volumen bajo
+    o.connect(g); g.connect(ctx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.25);
+    o.stop(ctx.currentTime + 0.26);
+  } catch (_) {}
+}
+
+/* ================================
+   ✨ Flip text helper (pantalla aeropuerto)
+================================ */
+/**
+ * Reemplaza el texto con un micro efecto tipo "flip".
+ * @param {HTMLElement} el - contenedor (puede envolver un <span>)
+ * @param {string} text
+ */
+function flipUpdate(el, text){
+  if(!el) return;
+  let inner = el.querySelector('span');
+  if(!inner){ inner = document.createElement('span'); el.textContent=''; el.appendChild(inner); }
+  if(inner.textContent === text) return;
+  el.classList.add('flip','update');
+  inner.textContent = text;
+  setTimeout(()=> el.classList.remove('update'), 380);
+}
+
+/* ================================
+   🗺️ Leaflet helpers (mapa)
+================================ */
+const COORD_PTY = [9.071356, -79.383453];   // Tocumen Intl
+const COORD_MVD = [-34.838417, -56.030806]; // Carrasco Intl
+
+/** Interpolación lineal */
+function lerp(a, b, t){ return a + (b - a) * t; }
+function lerpLatLng([lat1,lng1],[lat2,lng2], t){
+  return [ lerp(lat1, lat2, t), lerp(lng1, lng2, t) ];
+}
+
+/** Haversine (km) */
+function haversineKm([lat1,lon1],[lat2,lon2]){
+  const toRad = d=> d*Math.PI/180;
+  const R=6371;
+  const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+}
+
+/* ================================
+   🚦 Gestión de eventos (UI)
+================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  // AOS opcional
+  // AOS (decorativo)
   if (window.AOS) AOS.init({ once: false, duration: 800, easing: "ease-out-cubic" });
 
-  // Datos desde HTML
+  // ===== Botón modo oscuro (Boxicons) con persistencia =====
+  const btnModo = document.querySelector('#toggle-modo');
+  if (btnModo && btnModo.dataset.bound !== '1') {
+    btnModo.dataset.bound = '1';
+    const iconEl = btnModo.querySelector('i');
+
+    const applyMode = (dark) => {
+      document.body.classList.toggle('modo-oscuro', dark);
+      if (iconEl) {
+        iconEl.classList.toggle('bx-sun', dark);
+        iconEl.classList.toggle('bx-moon', !dark);
+      }
+      try { localStorage.setItem('modoOscuro', dark ? '1' : '0'); } catch (_) {}
+    };
+
+    // Estado inicial
+    let darkStart = false;
+    try {
+      const saved = localStorage.getItem('modoOscuro');
+      if (saved === '1' || saved === '0') {
+        darkStart = saved === '1';
+      } else if (window.matchMedia) {
+        darkStart = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+    } catch (_) {}
+    applyMode(darkStart);
+
+    // Toggle
+    btnModo.addEventListener('click', () => {
+      applyMode(!document.body.classList.contains('modo-oscuro'));
+    });
+  }
+
+  // ===== Datos desde HTML =====
   const flightDataEl = document.querySelector("#flightData");
   const salidaMvd = flightDataEl?.dataset?.departureMvd;
   const salidaPty = flightDataEl?.dataset?.departurePty;
   const llegadaMvd = flightDataEl?.dataset?.arrivalMvd;
-
   if (!salidaMvd || !salidaPty || !llegadaMvd) {
     console.warn("Faltan atributos data-* en #flightData");
     return;
   }
 
-  // Instancia del dominio
+  // ===== Instancia del dominio =====
   const vuelo = new Vuelo(salidaMvd, salidaPty, llegadaMvd);
 
-  // Hooks de contadores
+  // ===== Mapa Leaflet =====
+  let map, planeMarker, line;
+  if (window.L && document.getElementById('map')) {
+    map = L.map('map', { zoomControl: false, attributionControl:false }).setView([ -10, -65 ], 3);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 7 }).addTo(map);
+
+    line = L.polyline([COORD_PTY, COORD_MVD], {
+      color: getComputedStyle(document.documentElement).getPropertyValue('--brand').trim() || '#d94f4f',
+      weight: 3,
+      opacity: 0.7,
+      dashArray: '8,8'
+    }).addTo(map);
+
+    L.marker(COORD_PTY).addTo(map).bindTooltip('PTY · Tocumen');
+    L.marker(COORD_MVD).addTo(map).bindTooltip('MVD · Carrasco');
+
+    planeMarker = L.circleMarker(COORD_PTY, {
+      radius: 6, color: '#fff', weight: 2, fillColor: '#d94f4f', fillOpacity: 1
+    }).addTo(map).bindTooltip('✈ En ruta');
+
+    map.fitBounds(line.getBounds(), { padding: [20,20] });
+  }
+
+  // ===== “Datos curiosos” =====
+  const distKm = haversineKm(COORD_PTY, COORD_MVD);
+  const factDist = document.querySelector('#factDist');
+  const factDur = document.querySelector('#factDur');
+  const factProg = document.querySelector('#factProg');
+  if (factDist) factDist.textContent = distKm.toLocaleString();
+
+  const msDur = new Date(llegadaMvd) - new Date(salidaPty);
+  const horas = Math.floor(msDur/3600000);
+  const mins  = Math.round((msDur%3600000)/60000);
+  if (factDur) factDur.textContent = `${horas}h ${String(mins).padStart(2,'0')}m`;
+
+  // ===== Flip horas (decorativo) =====
+  const salidaLocalEl  = document.querySelector('#salidaLocal');
+  const llegadaLocalEl = document.querySelector('#llegadaLocal');
+
+  // ===== Hooks de contadores =====
   const contadorSalidaEl = document.querySelector("#contadorSalida");
   const contadorLlegadaEl = document.querySelector("#contadorLlegada");
 
-  // Ticker 1s
+  // ===== Corazón al llegar + estado previo =====
+  const heartEl = document.querySelector('#arrivalHeart');
+  let estadoPrevio = null;
+
+  // ===== Ticker 1s =====
   const tick = () => {
     // Contadores
     if (contadorSalidaEl) renderContador(contadorSalidaEl, msADHMS(vuelo.msHasta(vuelo.salidaPty)));
     if (contadorLlegadaEl) renderContador(contadorLlegadaEl, msADHMS(vuelo.msHasta(vuelo.llegadaMvd)));
 
-    // Estado + progreso barra
-    renderEstado(vuelo);
+    // Estado textual + estilo de pill
+    const estado = vuelo.estado();
+    const estadoEl = document.querySelector("#estadoVuelo");
+    if (estadoEl) {
+      estadoEl.textContent = estado;
+      estadoEl.classList.remove('pill--boarding','pill--en-vuelo','pill--arribado');
+      if (Date.now() < vuelo.salidaPty) {
+        estadoEl.classList.add('pill--boarding');
+        estadoEl.textContent = 'En embarque';
+      } else if (estado === 'En vuelo') {
+        estadoEl.classList.add('pill--en-vuelo');
+      } else {
+        estadoEl.classList.add('pill--arribado');
+      }
+    }
 
-    // ✈ posición + nombres según progreso real
+    // Ding y corazón al cambiar estado
+    if (estado !== estadoPrevio) {
+      if (estadoPrevio !== null) playDing();
+      if (estado === 'Llegó' && heartEl) {
+        heartEl.classList.remove('show'); void heartEl.offsetWidth; heartEl.classList.add('show');
+      }
+      estadoPrevio = estado;
+    }
+
+    // Progreso y UI
     const prog = vuelo.progreso();
-    renderAvion(prog);
-    renderNombres(prog);
+    renderEstado(vuelo);       // barra
+    renderAvion(prog);         // ✈ en la pista
+    if (typeof renderNombres === 'function') renderNombres(prog);
+
+    if (factProg) factProg.textContent = `${Math.round(prog)}%`;
+
+    // Avión en el mapa
+    if (planeMarker) {
+      const t = Math.min(Math.max(prog/100, 0), 1);
+      planeMarker.setLatLng( lerpLatLng(COORD_PTY, COORD_MVD, t) );
+    }
+
+    // Flip clock suave (decorativo)
+    if (salidaLocalEl)  flipUpdate(salidaLocalEl,  salidaLocalEl.textContent.trim());
+    if (llegadaLocalEl) flipUpdate(llegadaLocalEl, llegadaLocalEl.textContent.trim());
   };
 
   tick();
@@ -209,34 +377,3 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.querySelector("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 });
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('#toggle-modo');
-  const icono = btn ? btn.querySelector('i') : null;
-
-  if (btn && icono) {
-    btn.addEventListener('click', () => {
-      document.body.classList.toggle('modo-oscuro');
-
-      // Cambiar icono
-      if (document.body.classList.contains('modo-oscuro')) {
-        icono.classList.remove('bx-moon');
-        icono.classList.add('bx-sun');
-      } else {
-        icono.classList.remove('bx-sun');
-        icono.classList.add('bx-moon');
-      }
-    });
-
-    // Estado inicial
-    if (document.body.classList.contains('modo-oscuro')) {
-      icono.classList.remove('bx-moon');
-      icono.classList.add('bx-sun');
-    } else {
-      icono.classList.remove('bx-sun');
-      icono.classList.add('bx-moon');
-    }
-  }
-});
-
