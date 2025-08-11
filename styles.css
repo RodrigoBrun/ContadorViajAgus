@@ -9,24 +9,24 @@
    🎨 Variables (tema)
 ================================ */
 :root{
-  --bg: #0e1117;
-  --bg-soft: #121624;
-  --panel: #161b26;
-  --panel-2: #0d1320;
-  --text: #e6eefc;
-  --text-dim: #a9b6d3;
+  --bg: #f7f1e3;         /* Beige claro de fondo principal */
+  --bg-soft: #f3e9db;     /* Beige más suave para paneles */
+  --panel: #f9efe5;       /* Fondo paneles claros */
+  --panel-2: #f4e5d6;     /* Variación para contraste sutil */
+  --text: #5a3e36;        /* Marrón rojizo para texto principal */
+  --text-dim: #a67c71;    /* Marrón suave para texto secundario */
 
-  --brand: #22c55e;      /* acento principal */
-  --brand-2: #60a5fa;    /* acento secundario */
-  --alert: #f59e0b;      /* warning */
-  --ok: #10b981;         /* ok */
-  --danger: #ef4444;     /* cancel */
+  --brand: #d94f4f;       /* Rojo cálido principal */
+  --brand-2: #f28b82;     /* Rojo claro/rosado secundario */
+  --alert: #e08e45;       /* Naranja quemado (alerta) */
+  --ok: #c0392b;          /* Rojo intenso para "ok" temático */
+  --danger: #8b1e1e;      /* Rojo oscuro para peligro/cancelar */
 
-  --line: #243047;
-  --dashed: #2e3b57;
+  --line: #d8b8a4;        /* Línea separadora en beige oscuro */
+  --dashed: #c49b88;      /* Línea punteada marrón suave */
 
-  --shadow-lg: 0 20px 50px rgba(0,0,0,.45);
-  --shadow-md: 0 10px 24px rgba(0,0,0,.35);
+  --shadow-lg: 0 20px 50px rgba(139, 30, 30, .25);
+  --shadow-md: 0 10px 24px rgba(139, 30, 30, .15);
 
   --radius-xl: 20px;
   --radius-lg: 16px;
@@ -35,6 +35,7 @@
   --header-h: 84px;
   --maxw: 1200px;
 }
+
 
 /* ================================
    🔧 Reset + Base
@@ -47,25 +48,26 @@ html, body{
   height: 100%;
 }
 
-body{
+body {
   margin: 0;
   font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background:
-    radial-gradient(1200px 600px at 10% -10%, #1b2140 0%, transparent 60%),
-    radial-gradient(800px 600px at 100% 0%, #0d1930 0%, transparent 60%),
-    linear-gradient(180deg, #0a0f1a 0%, #0b0f16 100%);
+    radial-gradient(1200px 600px at 10% -10%, #fcefe4 0%, transparent 60%), /* beige claro rosado */
+    radial-gradient(800px 600px at 100% 0%, #f9e0d0 0%, transparent 60%),  /* beige rosado más cálido */
+    linear-gradient(180deg, #f7f1e3 0%, #f4d6c3 100%);                    /* beige a salmón suave */
   color: var(--text);
   letter-spacing: .2px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 img{ max-width: 100%; display: block; }
 
 /* ================================
    🧭 Layout: Header / Main / Footer
 ================================ */
-.site-header{
+.site-header {
   position: sticky;
   top: 0;
   z-index: 20;
@@ -74,9 +76,9 @@ img{ max-width: 100%; display: block; }
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  background: rgba(10, 15, 26, 0.6);
+  background: rgba(249, 224, 208, 0.8); /* beige cálido semitransparente */
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(217, 79, 79, 0.25); /* rojo cálido translúcido */
 }
 
 .brand{
@@ -85,15 +87,17 @@ img{ max-width: 100%; display: block; }
   gap: 14px;
 }
 
-.brand-mark{
-  width: 44px; height: 44px;
-  display: grid; place-items: center;
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
-  color: #061016;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2)); /* rojos cálidos */
+  color: #fff5f0; /* blanco cálido para mejor contraste */
   font-size: 20px;
   font-weight: 800;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(217, 79, 79, 0.4); /* sombra acorde al rojo */
 }
 
 .brand-text .airline{
@@ -111,13 +115,13 @@ img{ max-width: 100%; display: block; }
   font-size: clamp(1.1rem, 2.2vw, 1.6rem);
 }
 
-.flight-code .code{
+.flight-code .code {
   display: inline-block;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(96, 165, 250, .15);
-  border: 1px solid rgba(96, 165, 250, .35);
-  color: #cfe5ff;
+  background: rgba(217, 79, 79, 0.15); /* rojo cálido suave */
+  border: 1px solid rgba(217, 79, 79, 0.35); /* rojo cálido más fuerte */
+  color: #8b1e1e; /* rojo oscuro para el texto */
   font-weight: 700;
   letter-spacing: .1em;
 }
@@ -132,7 +136,7 @@ main{
   padding: 28px 24px 60px;
   text-align: center;
   color: var(--text-dim);
-  border-top: 1px solid rgba(255,255,255,.06);
+  border-top: 1px solid rgba(217,79,79,.20);
 }
 
 /* ================================
@@ -140,7 +144,7 @@ main{
 ================================ */
 .track-section{
   margin: 24px 0 10px;
-  background: radial-gradient(800px 500px at 50% -40%, rgba(96,165,250,.12), transparent 60%);
+  background: radial-gradient(800px 500px at 50% -40%, rgba(217,79,79,.12), transparent 60%);
 }
 
 .track-wrap{
@@ -162,8 +166,8 @@ main{
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 800;
   letter-spacing: .06em;
-  color: #e8f2ff;
-  text-shadow: 0 6px 20px rgba(96,165,250,.25);
+  color: #8b1e1e; /* rojo oscuro */
+  text-shadow: 0 6px 20px rgba(217,79,79,.25);
 }
 
 .city-name{
@@ -177,8 +181,8 @@ main{
   position: relative;
   height: 140px;
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, rgba(20,26,40,.7), rgba(15,20,32,.7));
-  border: 1px solid rgba(255,255,255,.06);
+  background: linear-gradient(180deg, rgba(249,224,208,.80), rgba(244,214,195,.80)); /* beiges */
+  border: 1px solid rgba(217,79,79,.20);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
@@ -197,7 +201,7 @@ main{
       transparent 0 8px,
       var(--dashed) 8px 16px
     );
-  filter: drop-shadow(0 1px 0 rgba(0,0,0,.5));
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.20));
 }
 
 /* Avión */
@@ -217,13 +221,13 @@ main{
   transform: translateY(-50%);
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(34,197,94,.12);
-  border: 1px solid rgba(34,197,94,.38);
-  color: #c9ffde;
+  background: rgba(217,79,79,.12);
+  border: 1px solid rgba(217,79,79,.35);
+  color: #8b1e1e;
   font-weight: 700;
   letter-spacing: .05em;
   white-space: nowrap;
-  text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  text-shadow: 0 2px 8px rgba(0,0,0,.20);
   backdrop-filter: blur(4px);
 }
 
@@ -255,7 +259,7 @@ main{
 
 .info-card{
   background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(217,79,79,.20);
   border-radius: var(--radius-lg);
   padding: 18px 18px 16px;
   box-shadow: var(--shadow-md);
@@ -290,9 +294,9 @@ main{
   display: inline-block;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(34,197,94,.18);
-  border: 1px solid rgba(34,197,94,.35);
-  color: #b8ffd4;
+  background: rgba(217,79,79,.18);
+  border: 1px solid rgba(217,79,79,.35);
+  color: #8b1e1e;
   font-weight: 700;
 }
 
@@ -300,17 +304,17 @@ main{
   margin-top: 10px;
   width: 100%;
   height: 10px;
-  background: rgba(255,255,255,.05);
+  background: rgba(255,255,255,.20);
   border-radius: 999px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(217,79,79,.20);
 }
 
 .progress-bar{
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
-  box-shadow: 0 0 18px rgba(34,197,94,.35);
+  box-shadow: 0 0 18px rgba(217,79,79,.35);
   transition: width .8s ease;
 }
 
@@ -326,7 +330,7 @@ main{
 
 .countdown-card{
   background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(217,79,79,.20);
   border-radius: var(--radius-lg);
   padding: 18px;
   box-shadow: var(--shadow-md);
@@ -345,8 +349,8 @@ main{
 }
 
 .timer > div{
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.30);
+  border: 1px solid rgba(217,79,79,.20);
   border-radius: 14px;
   padding: 12px;
   text-align: center;
@@ -383,12 +387,12 @@ main{
 @keyframes plane-cruise{
   0%{
     left: 10%;
-    filter: drop-shadow(0 6px 12px rgba(96,165,250,.25));
+    filter: drop-shadow(0 6px 12px rgba(217,79,79,.25));
     transform: translate(-50%, -50%) rotate(0deg);
   }
   100%{
     left: 90%;
-    filter: drop-shadow(0 10px 18px rgba(96,165,250,.45));
+    filter: drop-shadow(0 10px 18px rgba(217,79,79,.45));
     transform: translate(-50%, -50%) rotate(2deg);
   }
 }
@@ -408,7 +412,7 @@ main{
 /* Sutil brillo al hover en tarjetas */
 .info-card:hover,
 .countdown-card:hover{
-  box-shadow: 0 14px 36px rgba(0,0,0,.48), 0 0 0 1px rgba(255,255,255,.06) inset;
+  box-shadow: 0 14px 36px rgba(0,0,0,.28), 0 0 0 1px rgba(217,79,79,.15) inset;
   transform: translateY(-1px);
   transition: all .25s ease;
 }
@@ -450,11 +454,183 @@ main{
   .timer > div{ padding: 10px; }
 }
 
-
 /* Anula animación automática del avión: el JS controla la posición */
 .plane { animation: none !important; }
-
 
 /* Los nombres ahora los controla JS, no CSS */
 .name-left,
 .name-right { animation: none !important; }
+
+
+/* =========================================
+   🌙 Modo oscuro bordó (toggle: body.modo-oscuro)
+   - Mantiene arquitectura por variables
+   - Texto claro rojizo, fondos bordó
+========================================= */
+body.modo-oscuro{
+  /* Paleta base */
+  --bg: #160b0f;           /* fondo general bordó profundo */
+  --bg-soft: #1b0e13;      /* variantes */
+  --panel: #1f1015;
+  --panel-2: #1a0d12;
+
+  --text: #ffd9d9;         /* rojo clarito/rosado */
+  --text-dim: #f2b6b6;     /* texto secundario cálido */
+
+  --brand: #a3122b;        /* bordó principal */
+  --brand-2: #d43d4f;      /* rojo cálido secundario */
+  --alert: #ffb067;
+  --ok: #ff7a7a;
+  --danger: #ff5a5a;
+
+  --line: #3a1b23;
+  --dashed: #4a202a;
+
+  --shadow-lg: 0 20px 50px rgba(0,0,0,.55);
+  --shadow-md: 0 10px 24px rgba(0,0,0,.45);
+}
+
+/* Fondo general con gradientes bordó */
+body.modo-oscuro{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #2a0f18 0%, transparent 60%),
+    radial-gradient(800px 600px at 100% 0%, #360f19 0%, transparent 60%),
+    linear-gradient(180deg, #160b0f 0%, #1a0d12 100%);
+  color: var(--text);
+}
+
+/* Header en vidrio oscuro bordó */
+body.modo-oscuro .site-header{
+  background: rgba(26, 13, 18, .75);
+  border-bottom: 1px solid rgba(212, 61, 79, .35);
+}
+
+/* Código de vuelo (pill) en tonos bordó */
+body.modo-oscuro .flight-code .code{
+  background: rgba(212, 61, 79, .15);
+  border: 1px solid rgba(212, 61, 79, .35);
+  color: var(--text);
+}
+
+/* Sección de trayecto: halo bordó */
+body.modo-oscuro .track-section{
+  background: radial-gradient(800px 500px at 50% -40%, rgba(212,61,79,.14), transparent 60%);
+}
+
+/* Pista más oscura */
+body.modo-oscuro .track{
+  background: linear-gradient(180deg, rgba(36,16,22,.9), rgba(28,12,18,.9));
+  border: 1px solid rgba(212,61,79,.25);
+}
+
+/* Códigos de ciudad y microcopy */
+body.modo-oscuro .city-code{ color: var(--text); text-shadow: 0 6px 20px rgba(212,61,79,.25); }
+body.modo-oscuro .microcopy{ color: var(--text-dim); }
+
+/* Nombres (pills) */
+body.modo-oscuro .name-tag{
+  background: rgba(212,61,79,.18);
+  border: 1px solid rgba(212,61,79,.45);
+  color: var(--text);
+  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+
+/* Tarjetas info y contadores */
+body.modo-oscuro .info-card,
+body.modo-oscuro .countdown-card{
+  border: 1px solid rgba(212,61,79,.25);
+  box-shadow: var(--shadow-md);
+}
+
+/* Estado (pill) */
+body.modo-oscuro .status .pill{
+  background: rgba(212,61,79,.20);
+  border: 1px solid rgba(212,61,79,.45);
+  color: var(--text);
+}
+
+/* Barra de progreso */
+body.modo-oscuro .progress{
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(212,61,79,.25);
+}
+body.modo-oscuro .progress-bar{
+  box-shadow: 0 0 18px rgba(212,61,79,.35);
+}
+
+/* Timer blocks */
+body.modo-oscuro .timer > div{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(212,61,79,.25);
+}
+
+/* Footer */
+body.modo-oscuro .site-footer{
+  border-top: 1px solid rgba(212,61,79,.25);
+}
+
+/* ================================
+   🌙/☀️ Botón flotante modo oscuro
+   - Posición fija abajo derecha
+   - Usa emojis: 🌙 (claro → pide oscuro) / ☀️ (oscuro → pide claro)
+================================ */
+#toggle-modo{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  line-height: 1;
+  z-index: 9999;
+  transition: transform .2s ease, box-shadow .2s ease, background .25s ease, color .25s ease;
+
+  /* Estilo por defecto (modo claro beige) */
+  background: #8b1e1e;     /* bordó */
+  color: #ffd6d6;          /* rojo clarito */
+  box-shadow: 0 8px 18px rgba(139, 30, 30, .35);
+}
+#toggle-modo:hover{
+  transform: scale(1.05);
+  box-shadow: 0 10px 22px rgba(139, 30, 30, .45);
+}
+
+/* Apariencia del botón cuando el body está en modo oscuro */
+body.modo-oscuro #toggle-modo{
+  background: #ffd6d6;     /* claro rosado */
+  color: #8b1e1e;          /* bordó para el emoji ☀️ */
+  box-shadow: 0 8px 18px rgba(0,0,0,.45);
+}
+body.modo-oscuro #toggle-modo:hover{
+  box-shadow: 0 10px 22px rgba(0,0,0,.55);
+}
+
+
+.btn-modo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--brand);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.btn-modo:hover {
+  background: var(--brand-2);
+}
+
