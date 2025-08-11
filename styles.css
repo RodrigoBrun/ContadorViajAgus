@@ -634,3 +634,73 @@ body.modo-oscuro #toggle-modo:hover{
   background: var(--brand-2);
 }
 
+/* ================================
+   🧪 Datos curiosos + Mapa
+================================ */
+.fun-facts .facts-card{
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border: 1px solid rgba(217,79,79,.20);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-md);
+  margin: 18px 0;
+}
+.facts-card h2{
+  margin: 0 0 10px 0;
+  font-family: "Playfair Display", serif;
+}
+.facts-list{
+  list-style: none; padding: 0; margin: 0; display: grid; gap: 8px;
+}
+.map-wrap{ margin: 16px 0 24px; }
+#map{ width: 100%; height: 320px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid rgba(217,79,79,.20); }
+
+/* ================================
+   ❤️ Corazón al llegar
+================================ */
+#arrivalHeart{
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  pointer-events: none;
+  opacity: 0; transform: scale(.7);
+  z-index: 9998;
+}
+#arrivalHeart i{
+  font-size: clamp(72px, 12vw, 160px);
+  color: var(--brand-2);
+  text-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+#arrivalHeart.show{
+  animation: heart-pop 1.8s ease-out forwards;
+}
+@keyframes heart-pop{
+  0%   { opacity: 0; transform: scale(.7); }
+  20%  { opacity: 1; transform: scale(1.05); }
+  50%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* ================================
+   🛫 Estados dinámicos (colores)
+================================ */
+.pill--boarding { background: rgba(224, 158, 69, .20); border-color: rgba(224, 158, 69, .45); color: #7a4a0f; }
+.pill--en-vuelo { background: rgba(217, 79, 79, .20); border-color: rgba(217, 79, 79, .45); color: #8b1e1e; }
+.pill--arribado { background: rgba(16, 185, 129, .20); border-color: rgba(16, 185, 129, .45); color: #065f46; }
+
+/* ================================
+   ⏱️ Flip-like para horas
+================================ */
+.flip{
+  display:inline-block; position:relative; perspective: 500px;
+}
+.flip span{
+  display:inline-block; transform-origin: center top;
+  transition: transform .35s ease, opacity .35s ease;
+}
+.flip.update span{
+  transform: rotateX(360deg);
+  opacity: .9;
+}
+
+/* Modo oscuro: mapa borde más notorio */
+body.modo-oscuro #map{ border-color: rgba(212,61,79,.35); }
