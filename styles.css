@@ -704,3 +704,17 @@ body.modo-oscuro #toggle-modo:hover{
 
 /* Modo oscuro: mapa borde más notorio */
 body.modo-oscuro #map{ border-color: rgba(212,61,79,.35); }
+
+.flight-code .code {
+  display: inline-block;
+  white-space: nowrap; /* No permite salto de línea */
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(166, 45, 45, 0.15); /* Bordó suave translúcido */
+  border: 1px solid rgba(166, 45, 45, 0.35); /* Bordó más marcado */
+  color: #a62d2d; /* Texto rojo/bordó */
+  font-weight: 700;
+  letter-spacing: .1em;
+  font-size: 0.9rem;
+}
+
