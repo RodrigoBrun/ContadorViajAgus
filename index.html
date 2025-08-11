@@ -11,6 +11,14 @@
 
   <!-- AOS (Animate On Scroll) -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  defer
+></script>
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -134,6 +142,31 @@
       </div>
     </section>
   </main>
+
+<!-- 🧪 Datos curiosos del vuelo -->
+<section class="fun-facts" data-aos="fade-up">
+  <div class="facts-card">
+    <h2>Datos curiosos del vuelo</h2>
+    <ul class="facts-list">
+      <li><strong>Distancia aproximada:</strong> <span id="factDist">—</span> km</li>
+      <li><strong>Duración estimada:</strong> <span id="factDur">—</span></li>
+      <li><strong>Progreso:</strong> <span id="factProg">0%</span></li>
+      <li class="muted"><i class='bx bx-info-circle'></i> Cálculo geodésico entre PTY y MVD</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 🗺️ Mapa interactivo -->
+<section class="map-wrap" data-aos="fade-up" data-aos-delay="100">
+  <div id="map" aria-label="Ruta Panamá a Montevideo"></div>
+</section>
+
+<!-- ❤️ Corazón al llegar -->
+<div id="arrivalHeart" aria-hidden="true">
+  <i class="bx bxs-heart"></i>
+</div>
+
+
 
   <footer class="site-footer" data-aos="fade-up">
     <p>Hecho con amor para Agustina → Rodrigo • <span id="year"></span></p>
